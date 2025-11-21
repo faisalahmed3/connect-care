@@ -52,31 +52,40 @@ const HeroSection = () => {
   }, [charIndex, isDeleting, index]);
 
   return (
-    <section className="relative w-full h-[92vh] overflow-hidden">
+    <section
+      className="
+        relative w-full 
+        h-[65vh] sm:h-[70vh] md:h-[80vh] lg:h-[92vh] 
+        overflow-hidden
+      "
+    >
 
       {/* BG GRADIENT */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#2DBCA6] to-[#21C4C0]"></div>
       <div className="absolute inset-0 bg-teal-500 opacity-[0.18] mix-blend-overlay"></div>
 
-      {/* DOCTOR IMAGE - RESPONSIVE */}
+      {/* DOCTOR IMAGE */}
       <img
         src={doctorImg}
         alt="doctor"
         className="
           absolute right-0 top-0
-          h-[55%] sm:h-[60%] md:h-[70%] lg:h-full
-          w-auto
-          object-contain
-          z-10
+          h-[50%] sm:h-[60%] md:h-[75%] lg:h-full
+          w-auto object-contain
           pointer-events-none select-none
+          z-10
         "
       />
 
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#2DBCA6]/60 to-[#21C4C0]/60 z-20"></div>
+      {/* GRADIENT OVER IMAGE */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#2DBCA6]/60 to-[#21C4C0]/60 z-20 pointer-events-none"></div>
 
-      {/* WAVE */}
-      <svg className="absolute bottom-0 left-0 w-full z-30" viewBox="0 0 1440 320">
+      {/* WAVE FIXED */}
+      <svg
+        className="absolute -bottom-[2px] left-0 w-full z-30"
+        viewBox="0 0 1440 320"
+        preserveAspectRatio="none"
+      >
         <path
           fill="#ffffff"
           d="M0,224L80,202.7C160,181,320,139,480,128C640,117,800,139,960,160C1120,181,1280,203,1360,186.7L1440,160V320H0Z"
@@ -86,20 +95,21 @@ const HeroSection = () => {
       {/* CONTENT */}
       <div
         className="
-          relative z-40
-          max-w-7xl mx-auto
-          h-full
+          relative z-40 
+          max-w-7xl mx-auto 
+          h-full 
           px-6 sm:px-8 md:px-12 lg:px-16
           flex items-center
         "
       >
         <div className="max-w-xl mt-10 sm:mt-16 md:mt-20">
 
-          {/* RESPONSIVE TITLE */}
+          {/* TYPING TITLE */}
           <h1
             className="
-              text-white font-extrabold tracking-tight leading-[1.15]
-              text-[32px] sm:text-[38px] md:text-[46px] lg:text-[52px]
+              text-white font-extrabold tracking-tight 
+              leading-[1.15]
+              text-[28px] sm:text-[36px] md:text-[46px] lg:text-[52px]
               mb-4 sm:mb-5 md:mb-6
             "
           >
@@ -107,11 +117,11 @@ const HeroSection = () => {
             <span className="animate-pulse opacity-80">|</span>
           </h1>
 
-          {/* RESPONSIVE DESCRIPTION */}
+          {/* DESCRIPTION */}
           <p
             key={index}
             className="
-              text-white/90
+              text-white/90 
               text-[13px] sm:text-[14px] md:text-[15px]
               leading-[1.7]
               mb-6 sm:mb-7 md:mb-8
@@ -125,8 +135,8 @@ const HeroSection = () => {
           {/* BUTTON */}
           <button
             className="
-              px-6 sm:px-7 md:px-8
-              py-2.5 sm:py-3
+              px-6 sm:px-7 md:px-8 
+              py-2.5 sm:py-3 
               bg-white text-teal-700 font-semibold
               rounded-md shadow-md hover:bg-gray-100 transition
               text-[13px] sm:text-[14px]
@@ -140,15 +150,12 @@ const HeroSection = () => {
             {slides.map((_, i) => (
               <div
                 key={i}
-                className={`
-                  w-2.5 h-2.5 sm:w-3 sm:h-3
-                  rounded-full transition-all
-                  ${index === i ? "bg-white" : "bg-white/50"}
-                `}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all ${
+                  index === i ? "bg-white" : "bg-white/50"
+                }`}
               ></div>
             ))}
           </div>
-
         </div>
       </div>
     </section>
