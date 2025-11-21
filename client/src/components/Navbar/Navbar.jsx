@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { FiSearch, FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX } from "react-icons/fi";
+import logo from "../../assets/logo.png";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -9,9 +11,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 py-5 flex items-center justify-between">
 
         {/* LOGO */}
-        <h1 className="text-white text-2xl font-semibold tracking-wide select-none">
-          ConnectCare
-        </h1>
+        <div className="flex items-center gap-2 cursor-pointer select-none">
+          <img src={logo} alt="ConnectCare Logo" className="w-10 h-10 object-contain" />
+          <h1 className="text-white text-2xl font-semibold tracking-wide">
+            ConnectCare
+          </h1>
+        </div>
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-12">
@@ -36,10 +41,14 @@ const Navbar = () => {
             CONTACT US
           </a>
 
-          {/* SEARCH ICON */}
-          <button className="text-white text-lg hover:text-gray-200 transition">
-            <FiSearch size={18} />
-          </button>
+          {/* AVATAR ICON → DASHBOARD */}
+          <a
+            href="/dashboard"
+            className="text-white hover:text-gray-200 transition text-2xl"
+            title="Go to Dashboard"
+          >
+            <FaUserCircle />
+          </a>
         </nav>
 
         {/* MOBILE MENU BUTTON */}
@@ -67,9 +76,13 @@ const Navbar = () => {
             CONTACT US
           </a>
 
-          <button className="text-white text-lg hover:text-gray-200 transition">
-            <FiSearch size={18} />
-          </button>
+          {/* MOBILE AVATAR */}
+          <a
+            href="/dashboard"
+            className="block text-white text-2xl hover:text-gray-200 transition"
+          >
+            <FaUserCircle />
+          </a>
         </div>
       )}
     </header>
