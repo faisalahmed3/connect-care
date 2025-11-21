@@ -3,11 +3,25 @@ import { FaHeartbeat } from "react-icons/fa";
 
 const Motivation = () => {
   return (
-    <section className="py-24 relative bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+    <section
+      className="
+        py-24 
+        relative 
+        overflow-hidden
+        bg-gradient-to-b from-white to-[#F0FFFC]
+      "
+    >
 
-      {/* Decorative background shapes (MATCHING TopDoctorsSlider) */}
-      <div className="absolute top-10 right-20 w-52 h-52 bg-teal-200/30 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 left-10 w-40 h-40 bg-teal-300/20 rounded-full blur-2xl"></div>
+      {/* MATCHING TEAL MIST BACKGROUND */}
+      <div className="absolute top-10 left-1/4 w-[500px] h-[500px] 
+        bg-teal-200/25 rounded-full blur-[120px]"></div>
+
+      <div className="absolute bottom-10 right-1/4 w-[420px] h-[420px] 
+        bg-teal-300/20 rounded-full blur-[140px]"></div>
+
+      {/* SMALLER BLUR SPOTS FOR TEXTURE */}
+      <div className="absolute top-1/3 right-10 w-40 h-40 
+        bg-teal-100/20 rounded-full blur-[80px]"></div>
 
       <div className="max-w-4xl mx-auto px-6 text-center relative z-20">
 

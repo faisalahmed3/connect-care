@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t mt-20 py-12">
+    <footer className="bg-white border-t py-12">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* TOP SECTION */}
