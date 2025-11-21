@@ -22,29 +22,25 @@ const HeroSection = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [charIndex, setCharIndex] = useState(0);
 
-  const typingSpeed = isDeleting ? 40 : 60; // speed for typing & erasing
-  const pauseTime = 1200; // wait before erasing
+  const typingSpeed = isDeleting ? 40 : 60;
+  const pauseTime = 1200;
 
   useEffect(() => {
     const currentTitle = slides[index].title;
 
     const handleTyping = () => {
       if (!isDeleting) {
-        // Typing forward
         if (charIndex < currentTitle.length) {
           setTypedText(currentTitle.substring(0, charIndex + 1));
           setCharIndex(charIndex + 1);
         } else {
-          // Wait before erasing
           setTimeout(() => setIsDeleting(true), pauseTime);
         }
       } else {
-        // Erasing backward
         if (charIndex > 0) {
           setTypedText(currentTitle.substring(0, charIndex - 1));
           setCharIndex(charIndex - 1);
         } else {
-          // Move to next slide
           setIsDeleting(false);
           setIndex((prev) => (prev + 1) % slides.length);
         }
@@ -58,18 +54,25 @@ const HeroSection = () => {
   return (
     <section className="relative w-full h-[92vh] overflow-hidden">
 
-      {/* BACKGROUND */}
+      {/* BG GRADIENT */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#2DBCA6] to-[#21C4C0]"></div>
       <div className="absolute inset-0 bg-teal-500 opacity-[0.18] mix-blend-overlay"></div>
 
-      {/* DOCTOR IMAGE */}
+      {/* DOCTOR IMAGE - RESPONSIVE */}
       <img
         src={doctorImg}
         alt="doctor"
-        className="absolute right-0 top-0 h-full object-contain z-10 pointer-events-none select-none"
+        className="
+          absolute right-0 top-0
+          h-[55%] sm:h-[60%] md:h-[70%] lg:h-full
+          w-auto
+          object-contain
+          z-10
+          pointer-events-none select-none
+        "
       />
 
-      {/* OVERLAY ON DOCTOR */}
+      {/* OVERLAY */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#2DBCA6]/60 to-[#21C4C0]/60 z-20"></div>
 
       {/* WAVE */}
@@ -81,37 +84,67 @@ const HeroSection = () => {
       </svg>
 
       {/* CONTENT */}
-      <div className="relative z-40 max-w-7xl mx-auto h-full px-10 flex items-center">
+      <div
+        className="
+          relative z-40
+          max-w-7xl mx-auto
+          h-full
+          px-6 sm:px-8 md:px-12 lg:px-16
+          flex items-center
+        "
+      >
+        <div className="max-w-xl mt-10 sm:mt-16 md:mt-20">
 
-        <div className="max-w-xl mt-20">
-
-          {/* TYPING + ERASING TITLE */}
-          <h1 className="text-white font-extrabold tracking-tight leading-[1.15] text-[52px] mb-6">
+          {/* RESPONSIVE TITLE */}
+          <h1
+            className="
+              text-white font-extrabold tracking-tight leading-[1.15]
+              text-[32px] sm:text-[38px] md:text-[46px] lg:text-[52px]
+              mb-4 sm:mb-5 md:mb-6
+            "
+          >
             {typedText}
             <span className="animate-pulse opacity-80">|</span>
           </h1>
 
-          {/* Description */}
+          {/* RESPONSIVE DESCRIPTION */}
           <p
             key={index}
-            className="text-white/90 text-[15px] leading-[1.7] mb-8 max-w-md transition-opacity duration-500"
+            className="
+              text-white/90
+              text-[13px] sm:text-[14px] md:text-[15px]
+              leading-[1.7]
+              mb-6 sm:mb-7 md:mb-8
+              max-w-xs sm:max-w-sm md:max-w-md
+              transition-opacity duration-500
+            "
           >
             {slides[index].text}
           </p>
 
           {/* BUTTON */}
-          <button className="px-8 py-3 bg-white text-teal-700 font-semibold rounded-md shadow-md hover:bg-gray-100 transition">
+          <button
+            className="
+              px-6 sm:px-7 md:px-8
+              py-2.5 sm:py-3
+              bg-white text-teal-700 font-semibold
+              rounded-md shadow-md hover:bg-gray-100 transition
+              text-[13px] sm:text-[14px]
+            "
+          >
             Book Now
           </button>
 
           {/* DOTS */}
-          <div className="flex gap-3 mt-10 ml-2">
+          <div className="flex gap-2 sm:gap-3 mt-8 sm:mt-10 ml-1 sm:ml-2">
             {slides.map((_, i) => (
               <div
                 key={i}
-                className={`w-3 h-3 rounded-full ${
-                  index === i ? "bg-white" : "bg-white/50"
-                }`}
+                className={`
+                  w-2.5 h-2.5 sm:w-3 sm:h-3
+                  rounded-full transition-all
+                  ${index === i ? "bg-white" : "bg-white/50"}
+                `}
               ></div>
             ))}
           </div>
