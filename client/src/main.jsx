@@ -1,13 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import Home from './pages/Home/Home.jsx'
-import ContactUs from './pages/Home/Contact/ContactUs.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.jsx";
+import "./index.css";
+import Navbar from "./components/Navbar/Navbar.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-   <Home></Home>
-   <ContactUs></ContactUs>
-  </StrictMode>,
-)
+    <BrowserRouter>
+      <Navbar></Navbar>
+      <App />
+      <Footer></Footer>
+    </BrowserRouter>
+  </StrictMode>
+);

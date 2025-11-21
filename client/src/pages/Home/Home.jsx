@@ -11,13 +11,11 @@ import DonateSection from "../../components/DonateSection/DonateSection";
 const Home = () => {
   return (
     <div className="bg-white min-h-screen"> 
-      <Navbar />
       <HeroSection />
       <Departments />
       <TopDoctorsSlider></TopDoctorsSlider>
       <Motivation></Motivation>
       <DonateSection></DonateSection>
-      <Footer />
     </div>
   );
 };
