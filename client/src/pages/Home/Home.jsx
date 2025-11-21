@@ -4,6 +4,7 @@ import HeroSection from "../../components/HeroSection/HeroSection";
 import Departments from "../../components/Departments/Departments";
 import Footer from "../../components/Footer/Footer";
 import TopDoctorsSlider from "../../components/TopDoctors/TopDoctors";
+import Motivation from "../../components/Motivation/Motivation";
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
       <HeroSection />
       <Departments />
       <TopDoctorsSlider></TopDoctorsSlider>
+      <Motivation></Motivation>
       <Footer />
     </div>
   );
