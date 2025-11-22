@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaStar } from "react-icons/fa";
 
 const doctors = [
@@ -71,6 +71,13 @@ const doctors = [
 const AllDoctors = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate loading effect
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const specialties = ["All", ...new Set(doctors.map((d) => d.specialty))];
 
@@ -103,9 +110,14 @@ const AllDoctors = () => {
         {/* Filters */}
         <div className="flex flex-col md:flex-row items-center gap-5 md:justify-between mb-10">
 
-        {/* SEARCH BAR */}
-        {/* SEARCH BAR */}
+          {/* SEARCH BAR */}
+          {/* SEARCH BAR */}
         <div className="relative w-full md:w-1/3">
+
+        {/* LEFT ICON */}
+        <FaSearch className="absolute left-4 top-3 text-gray-500" />
+
+        {/* INPUT */}
         <input
             type="text"
             placeholder="Search doctor..."
@@ -119,10 +131,7 @@ const AllDoctors = () => {
             onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* Left ICON */}
-        <FaSearch className="absolute left-4 top-3.5 text-gray-500 text-lg" />
-
-        {/* Right clickable ICON */}
+        {/* RIGHT CLICKABLE SEARCH BUTTON */}
         <button
             onClick={() => console.log('Search triggered:', search)}
             className="
@@ -152,74 +161,81 @@ const AllDoctors = () => {
           </select>
         </div>
 
-        {/* DOCTOR GRID */}
-        {filteredDoctors.length === 0 ? (
-          <p className="text-center text-gray-600 mt-20 text-lg">
-            No doctors found 😔
+        {/* LOADING STATE */}
+        {loading && (
+          <p className="text-center text-teal-600 text-lg font-medium mt-20 animate-pulse">
+            Loading doctors...
           </p>
-        ) : (
-          <div className="
-            grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-            gap-10
-          ">
-            {filteredDoctors.map((doc, idx) => (
-              <div
-                key={idx}
-                className="
-                  bg-white/70 backdrop-blur-xl
-                  p-6 rounded-2xl shadow-lg 
-                  border border-teal-100
-                  hover:shadow-2xl hover:-translate-y-2
-                  transition-all duration-300
-                  text-center
-                "
-              >
-                <img
-                  src={doc.image}
-                  alt={doc.name}
-                  className="w-28 h-28 rounded-full mx-auto shadow-md object-cover"
-                />
+        )}
 
-                <h3 className="text-lg font-semibold mt-5 text-gray-800">
-                  {doc.name}
-                </h3>
-
-                {/* DEGREE */}
-                <p className="text-gray-600 text-sm mt-1">
-                  {doc.degree}
-                </p>
-
-                {/* SPECIALTY */}
-                <p className="text-teal-600 font-medium text-sm mt-1">
-                  {doc.specialty}
-                </p>
-
-                {/* HOSPITAL */}
-                <p className="text-gray-700 text-xs mt-1 italic">
-                  {doc.hospital}
-                </p>
-
-                <div className="flex justify-center items-center gap-1 text-yellow-500 mt-3">
-                  <FaStar />
-                  <span className="text-gray-700 text-sm font-medium">
-                    {doc.rating}
-                  </span>
-                </div>
-
-                <button
+        {/* DOCTOR GRID */}
+        {!loading && (
+          filteredDoctors.length === 0 ? (
+            <p className="text-center text-gray-600 mt-20 text-lg">
+              No doctors found 😔
+            </p>
+          ) : (
+            <div
+              className="
+                grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+                gap-10
+              "
+            >
+              {filteredDoctors.map((doc, idx) => (
+                <div
+                  key={idx}
                   className="
-                    mt-5 w-full py-2.5 
-                    bg-teal-600 text-white rounded-lg
-                    font-semibold hover:bg-teal-700 shadow
-                    transition-all
+                    bg-white/70 backdrop-blur-xl
+                    p-6 rounded-2xl shadow-lg 
+                    border border-teal-100
+                    hover:shadow-2xl hover:-translate-y-2
+                    transition-all duration-300
+                    text-center
                   "
                 >
-                  View Profile
-                </button>
-              </div>
-            ))}
-          </div>
+                  <img
+                    src={doc.image}
+                    alt={doc.name}
+                    className="w-28 h-28 rounded-full mx-auto shadow-md object-cover"
+                  />
+
+                  <h3 className="text-lg font-semibold mt-5 text-gray-800">
+                    {doc.name}
+                  </h3>
+
+                  <p className="text-gray-600 text-sm mt-1">{doc.degree}</p>
+
+                  <p className="text-teal-600 font-medium text-sm mt-1">
+                    {doc.specialty}
+                  </p>
+
+                  <p className="text-gray-700 text-xs mt-1 italic">
+                    {doc.hospital}
+                  </p>
+
+                  <div className="flex justify-center items-center gap-1 text-yellow-500 mt-3">
+                    <FaStar />
+                    <span className="text-gray-700 text-sm font-medium">
+                      {doc.rating}
+                    </span>
+                  </div>
+
+                  <button
+                    className="
+                      mt-5 w-full py-2.5 
+                      bg-teal-600 text-white rounded-lg
+                      font-semibold hover:bg-teal-700 shadow
+                      transition-all
+                    "
+                  >
+                    View Profile
+                  </button>
+                </div>
+              ))}
+            </div>
+          )
         )}
+
       </div>
     </section>
   );
