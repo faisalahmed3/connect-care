@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaSearch, FaStar } from "react-icons/fa";
 
 const doctors = [
+  // 1–8 (your originals)
   {
     name: "Dr. Amelia Thompson",
     degree: "MBBS, FCPS (Cardiology)",
@@ -66,122 +67,390 @@ const doctors = [
     rating: 4.8,
     image: "https://i.pravatar.cc/300?img=5",
   },
+
+  // 9–36 extra doctors for pagination
+  {
+    name: "Dr. Ava Mitchell",
+    degree: "MBBS, MD (Internal Medicine)",
+    hospital: "Square Hospital",
+    specialty: "General Physician",
+    rating: 4.5,
+    image: "https://i.pravatar.cc/300?img=40",
+  },
+  {
+    name: "Dr. William Scott",
+    degree: "MBBS, FCPS (Cardiology)",
+    hospital: "GreenLife Hospital",
+    specialty: "Cardiologist",
+    rating: 4.6,
+    image: "https://i.pravatar.cc/300?img=41",
+  },
+  {
+    name: "Dr. Emily Parker",
+    degree: "MBBS, MD (Neurology)",
+    hospital: "United Hospital",
+    specialty: "Neurologist",
+    rating: 4.7,
+    image: "https://i.pravatar.cc/300?img=42",
+  },
+  {
+    name: "Dr. Daniel Hughes",
+    degree: "MBBS, MS (Ortho Surgery)",
+    hospital: "Evercare Hospital",
+    specialty: "Orthopedic Surgeon",
+    rating: 4.4,
+    image: "https://i.pravatar.cc/300?img=43",
+  },
+  {
+    name: "Dr. Grace Turner",
+    degree: "MBBS, DDV (Dermatology)",
+    hospital: "Popular Diagnostic Centre",
+    specialty: "Dermatologist",
+    rating: 4.5,
+    image: "https://i.pravatar.cc/300?img=44",
+  },
+  {
+    name: "Dr. Jacob Morris",
+    degree: "MBBS, FCPS (Medicine)",
+    hospital: "Ibn Sina Medical",
+    specialty: "General Physician",
+    rating: 4.3,
+    image: "https://i.pravatar.cc/300?img=45",
+  },
+  {
+    name: "Dr. Mia Coleman",
+    degree: "MBBS, MD (Pediatrics)",
+    hospital: "Evercare Hospital",
+    specialty: "Pediatrician",
+    rating: 4.6,
+    image: "https://i.pravatar.cc/300?img=46",
+  },
+  {
+    name: "Dr. Lucas Reed",
+    degree: "MBBS, FCPS (GYNAE)",
+    hospital: "Labaid Hospital",
+    specialty: "Gynecologist",
+    rating: 4.4,
+    image: "https://i.pravatar.cc/300?img=48",
+  },
+  {
+    name: "Dr. Chloe Adams",
+    degree: "MBBS, MS (ENT)",
+    hospital: "Medinova Hospital",
+    specialty: "ENT Specialist",
+    rating: 4.5,
+    image: "https://i.pravatar.cc/300?img=49",
+  },
+  {
+    name: "Dr. Mason Rivera",
+    degree: "MBBS, FCPS (Cardiology)",
+    hospital: "GreenLife Hospital",
+    specialty: "Cardiologist",
+    rating: 4.2,
+    image: "https://i.pravatar.cc/300?img=50",
+  },
+  {
+    name: "Dr. Ella Foster",
+    degree: "MBBS, MD (Neurology)",
+    hospital: "United Hospital",
+    specialty: "Neurologist",
+    rating: 4.3,
+    image: "https://i.pravatar.cc/300?img=51",
+  },
+  {
+    name: "Dr. Henry Brooks",
+    degree: "MBBS, DDV (Dermatology)",
+    hospital: "Popular Diagnostic Centre",
+    specialty: "Dermatologist",
+    rating: 4.1,
+    image: "https://i.pravatar.cc/300?img=53",
+  },
+  {
+    name: "Dr. Lily Ward",
+    degree: "MBBS, MS (Ortho Surgery)",
+    hospital: "Square Hospital",
+    specialty: "Orthopedic Surgeon",
+    rating: 4.4,
+    image: "https://i.pravatar.cc/300?img=54",
+  },
+  {
+    name: "Dr. Carter James",
+    degree: "MBBS, FCPS (Medicine)",
+    hospital: "Ibn Sina Medical",
+    specialty: "General Physician",
+    rating: 4.2,
+    image: "https://i.pravatar.cc/300?img=55",
+  },
+  {
+    name: "Dr. Zoe Richardson",
+    degree: "MBBS, MD (Pediatrics)",
+    hospital: "Evercare Hospital",
+    specialty: "Pediatrician",
+    rating: 4.5,
+    image: "https://i.pravatar.cc/300?img=57",
+  },
+  {
+    name: "Dr. Nathan Cooper",
+    degree: "MBBS, FCPS (GYNAE)",
+    hospital: "Labaid Hospital",
+    specialty: "Gynecologist",
+    rating: 4.3,
+    image: "https://i.pravatar.cc/300?img=58",
+  },
+  {
+    name: "Dr. Aria Phillips",
+    degree: "MBBS, MS (ENT)",
+    hospital: "Medinova Hospital",
+    specialty: "ENT Specialist",
+    rating: 4.4,
+    image: "https://i.pravatar.cc/300?img=59",
+  },
+  {
+    name: "Dr. Logan Hayes",
+    degree: "MBBS, FCPS (Cardiology)",
+    hospital: "GreenLife Hospital",
+    specialty: "Cardiologist",
+    rating: 4.1,
+    image: "https://i.pravatar.cc/300?img=60",
+  },
+  {
+    name: "Dr. Sofia Price",
+    degree: "MBBS, MD (Neurology)",
+    hospital: "United Hospital",
+    specialty: "Neurologist",
+    rating: 4.2,
+    image: "https://i.pravatar.cc/300?img=61",
+  },
+  {
+    name: "Dr. Ryan Bell",
+    degree: "MBBS, DDV (Dermatology)",
+    hospital: "Popular Diagnostic Centre",
+    specialty: "Dermatologist",
+    rating: 4.0,
+    image: "https://i.pravatar.cc/300?img=62",
+  },
+  {
+    name: "Dr. Mila Howard",
+    degree: "MBBS, MS (Ortho Surgery)",
+    hospital: "Square Hospital",
+    specialty: "Orthopedic Surgeon",
+    rating: 4.3,
+    image: "https://i.pravatar.cc/300?img=63",
+  },
+  {
+    name: "Dr. Owen Barnes",
+    degree: "MBBS, FCPS (Medicine)",
+    hospital: "Ibn Sina Medical",
+    specialty: "General Physician",
+    rating: 4.1,
+    image: "https://i.pravatar.cc/300?img=64",
+  },
+  {
+    name: "Dr. Layla Simmons",
+    degree: "MBBS, MD (Pediatrics)",
+    hospital: "Evercare Hospital",
+    specialty: "Pediatrician",
+    rating: 4.4,
+    image: "https://i.pravatar.cc/300?img=65",
+  },
+  {
+    name: "Dr. Elijah Ward",
+    degree: "MBBS, FCPS (GYNAE)",
+    hospital: "Labaid Hospital",
+    specialty: "Gynecologist",
+    rating: 4.2,
+    image: "https://i.pravatar.cc/300?img=66",
+  },
+  {
+    name: "Dr. Nora Griffin",
+    degree: "MBBS, MS (ENT)",
+    hospital: "Medinova Hospital",
+    specialty: "ENT Specialist",
+    rating: 4.3,
+    image: "https://i.pravatar.cc/300?img=67",
+  },
+  {
+    name: "Dr. Jason Kim",
+    degree: "MBBS, FCPS (Cardiology)",
+    hospital: "GreenLife Hospital",
+    specialty: "Cardiologist",
+    rating: 4.0,
+    image: "https://i.pravatar.cc/300?img=68",
+  },
+  {
+    name: "Dr. Natalie Ross",
+    degree: "MBBS, MD (Neurology)",
+    hospital: "United Hospital",
+    specialty: "Neurologist",
+    rating: 4.1,
+    image: "https://i.pravatar.cc/300?img=69",
+  },
+  {
+    name: "Dr. Dylan Stone",
+    degree: "MBBS, DDV (Dermatology)",
+    hospital: "Popular Diagnostic Centre",
+    specialty: "Dermatologist",
+    rating: 3.9,
+    image: "https://i.pravatar.cc/300?img=70",
+  },
 ];
 
 const AllDoctors = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
+  const [sort, setSort] = useState("default"); // default | ratingDesc | ratingAsc
   const [loading, setLoading] = useState(true);
 
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const doctorsPerPage = 12;
+
   useEffect(() => {
-    // simulate loading effect
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setLoading(false), 700);
+    return () => clearTimeout(t);
   }, []);
 
   const specialties = ["All", ...new Set(doctors.map((d) => d.specialty))];
 
-  const filteredDoctors = doctors.filter((doc) => {
+  // Filter
+  let filtered = doctors.filter((doc) => {
     const matchName = doc.name.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "All" || doc.specialty === filter;
     return matchName && matchFilter;
   });
 
+  // Sort
+  if (sort === "ratingDesc") {
+    filtered = [...filtered].sort((a, b) => b.rating - a.rating);
+  } else if (sort === "ratingAsc") {
+    filtered = [...filtered].sort((a, b) => a.rating - b.rating);
+  }
+  // sort === "default" → keep original order
+
+  // Pagination
+  const totalPages = Math.ceil(filtered.length / doctorsPerPage);
+  const indexOfLast = currentPage * doctorsPerPage;
+  const indexOfFirst = indexOfLast - doctorsPerPage;
+  const currentDoctors = filtered.slice(indexOfFirst, indexOfLast);
+
+  const goToPage = (num) => setCurrentPage(num);
+
   return (
     <section className="py-24 bg-gradient-to-b from-[#E4FFFA] to-white min-h-screen relative">
-
       {/* Background shapes */}
       <div className="absolute -top-10 left-10 w-40 h-40 bg-teal-300/30 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-10 w-52 h-52 bg-teal-300/20 rounded-full blur-[100px]"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-20">
-
-        {/* Page Heading */}
+        {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800">
             All Doctors
           </h2>
           <p className="text-gray-600 mt-3 max-w-xl mx-auto">
-            Browse through our list of certified, experienced healthcare professionals.
+            Browse through our list of certified, experienced healthcare
+            professionals.
           </p>
           <div className="w-24 h-1 bg-teal-500 mx-auto mt-4 rounded-full"></div>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row items-center gap-5 md:justify-between mb-10">
+        {/* SEARCH - FILTER - SORT */}
+        <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between mb-10">
+          {/* Search */}
+          <div className="relative w-full md:w-1/3">
+            <FaSearch className="absolute left-4 top-3 text-gray-500" />
 
-          {/* SEARCH BAR */}
-          {/* SEARCH BAR */}
-        <div className="relative w-full md:w-1/3">
+            <input
+              type="text"
+              placeholder="Search doctor..."
+              className="
+                w-full bg-white/70 backdrop-blur-xl 
+                border border-teal-100 rounded-xl
+                py-3 pl-12 pr-12 shadow-md
+                focus:ring-2 focus:ring-teal-300 focus:border-teal-400
+                outline-none transition
+              "
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
 
-        {/* LEFT ICON */}
-        <FaSearch className="absolute left-4 top-3 text-gray-500" />
+            {/* Right icon button */}
+            <button
+              type="button"
+              className="
+                absolute right-3 top-2.5 bg-teal-500 hover:bg-teal-600
+                text-white p-2 rounded-lg shadow transition
+              "
+            >
+              <FaSearch className="text-sm" />
+            </button>
+          </div>
 
-        {/* INPUT */}
-        <input
-            type="text"
-            placeholder="Search doctor..."
-            className="
-            w-full bg-white/70 backdrop-blur-xl 
-            border border-teal-100 rounded-xl
-            py-3 pl-12 pr-12 shadow-md
-            focus:ring-2 focus:ring-teal-300 outline-none
-            "
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-        />
+          {/* Filter + Sort side-by-side */}
+          <div className="flex w-full md:w-auto gap-3 justify-between md:justify-end">
+            {/* Filter */}
+            <select
+              className="
+                flex-1 bg-white/70 backdrop-blur-xl 
+                border border-teal-100 rounded-xl 
+                py-3 px-4 shadow-md
+                focus:ring-2 focus:ring-teal-300 focus:border-teal-400
+                outline-none transition
+              "
+              value={filter}
+              onChange={(e) => {
+                setFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              {specialties.map((s, i) => (
+                <option key={i} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
 
-        {/* RIGHT CLICKABLE SEARCH BUTTON */}
-        <button
-            onClick={() => console.log('Search triggered:', search)}
-            className="
-            absolute right-3 top-2.5 
-            bg-teal-500 hover:bg-teal-600
-            text-white p-2 rounded-lg
-            transition-all duration-200
-            shadow
-            "
-        >
-            <FaSearch className="text-sm" />
-        </button>
+            {/* Sort */}
+            <select
+              className="
+                flex-1 bg-white/70 backdrop-blur-xl 
+                border border-teal-100 rounded-xl 
+                py-3 px-4 shadow-md
+                focus:ring-2 focus:ring-teal-300 focus:border-teal-400
+                outline-none transition
+              "
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="default">Neutral (Default)</option>
+              <option value="ratingDesc">Rating (High → Low)</option>
+              <option value="ratingAsc">Rating (Low → High)</option>
+            </select>
+          </div>
         </div>
 
-
-          {/* FILTER */}
-          <select
-            className="bg-white/70 backdrop-blur-xl border border-teal-100 rounded-xl py-3 px-4 shadow-md focus:ring-2 focus:ring-teal-300 outline-none"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            {specialties.map((spec, idx) => (
-              <option key={idx} value={spec}>
-                {spec}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* LOADING STATE */}
+        {/* LOADING */}
         {loading && (
-          <p className="text-center text-teal-600 text-lg font-medium mt-20 animate-pulse">
+          <p className="text-center text-teal-600 text-lg mt-20 animate-pulse">
             Loading doctors...
           </p>
         )}
 
-        {/* DOCTOR GRID */}
-        {!loading && (
-          filteredDoctors.length === 0 ? (
+        {/* GRID */}
+        {!loading &&
+          (currentDoctors.length === 0 ? (
             <p className="text-center text-gray-600 mt-20 text-lg">
               No doctors found 😔
             </p>
           ) : (
-            <div
-              className="
-                grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-                gap-10
-              "
-            >
-              {filteredDoctors.map((doc, idx) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+              {currentDoctors.map((doc, idx) => (
                 <div
                   key={idx}
                   className="
@@ -233,9 +502,26 @@ const AllDoctors = () => {
                 </div>
               ))}
             </div>
-          )
-        )}
+          ))}
 
+        {/* PAGINATION */}
+        {!loading && filtered.length > doctorsPerPage && (
+          <div className="flex justify-center mt-12 gap-3 flex-wrap">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => goToPage(i + 1)}
+                className={`px-4 py-2 rounded-lg shadow text-sm font-semibold transition ${
+                  currentPage === i + 1
+                    ? "bg-teal-600 text-white shadow-lg"
+                    : "bg-white border border-teal-200 text-teal-700 hover:bg-teal-50"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
