@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 // -- DOCTORS ARRAY (unchanged) --
 const doctors = [
-  // 1–8 (your originals)
   {
+    id: 1,
     name: "Dr. Amelia Thompson",
     degree: "MBBS, FCPS (Cardiology)",
     hospital: "GreenLife Hospital",
@@ -13,6 +15,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=47",
   },
   {
+    id: 2,
     name: "Dr. Ethan Carter",
     degree: "MBBS, MD (Neurology)",
     hospital: "United Hospital",
@@ -21,6 +24,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=52",
   },
   {
+    id: 3,
     name: "Dr. Sophia Reynolds",
     degree: "MBBS, DDV (Dermatology)",
     hospital: "Popular Diagnostic Centre",
@@ -29,6 +33,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=32",
   },
   {
+    id: 4,
     name: "Dr. Benjamin Clarke",
     degree: "MBBS, MS (Ortho Surgery)",
     hospital: "Square Hospital",
@@ -37,6 +42,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=15",
   },
   {
+    id: 5,
     name: "Dr. Olivia Martinez",
     degree: "MBBS, FCPS (Medicine)",
     hospital: "Ibn Sina Medical",
@@ -45,6 +51,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=10",
   },
   {
+    id: 6,
     name: "Dr. Liam Anderson",
     degree: "MBBS, MD (Pediatrics)",
     hospital: "Evercare Hospital",
@@ -53,6 +60,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=56",
   },
   {
+    id: 7,
     name: "Dr. Harper Wilson",
     degree: "MBBS, FCPS (GYNAE)",
     hospital: "Labaid Hospital",
@@ -61,6 +69,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=22",
   },
   {
+    id: 8,
     name: "Dr. Noah Bennett",
     degree: "MBBS, MS (ENT)",
     hospital: "Medinova Hospital",
@@ -69,8 +78,9 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=5",
   },
 
-  // 9–36 extra doctors for pagination
+  // Extra doctors for pagination
   {
+    id: 9,
     name: "Dr. Ava Mitchell",
     degree: "MBBS, MD (Internal Medicine)",
     hospital: "Square Hospital",
@@ -79,6 +89,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=40",
   },
   {
+    id: 10,
     name: "Dr. William Scott",
     degree: "MBBS, FCPS (Cardiology)",
     hospital: "GreenLife Hospital",
@@ -87,6 +98,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=41",
   },
   {
+    id: 11,
     name: "Dr. Emily Parker",
     degree: "MBBS, MD (Neurology)",
     hospital: "United Hospital",
@@ -95,6 +107,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=42",
   },
   {
+    id: 12,
     name: "Dr. Daniel Hughes",
     degree: "MBBS, MS (Ortho Surgery)",
     hospital: "Evercare Hospital",
@@ -103,6 +116,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=43",
   },
   {
+    id: 13,
     name: "Dr. Grace Turner",
     degree: "MBBS, DDV (Dermatology)",
     hospital: "Popular Diagnostic Centre",
@@ -111,6 +125,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=44",
   },
   {
+    id: 14,
     name: "Dr. Jacob Morris",
     degree: "MBBS, FCPS (Medicine)",
     hospital: "Ibn Sina Medical",
@@ -119,6 +134,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=45",
   },
   {
+    id: 15,
     name: "Dr. Mia Coleman",
     degree: "MBBS, MD (Pediatrics)",
     hospital: "Evercare Hospital",
@@ -127,6 +143,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=46",
   },
   {
+    id: 16,
     name: "Dr. Lucas Reed",
     degree: "MBBS, FCPS (GYNAE)",
     hospital: "Labaid Hospital",
@@ -135,6 +152,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=48",
   },
   {
+    id: 17,
     name: "Dr. Chloe Adams",
     degree: "MBBS, MS (ENT)",
     hospital: "Medinova Hospital",
@@ -143,6 +161,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=49",
   },
   {
+    id: 18,
     name: "Dr. Mason Rivera",
     degree: "MBBS, FCPS (Cardiology)",
     hospital: "GreenLife Hospital",
@@ -151,6 +170,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=50",
   },
   {
+    id: 19,
     name: "Dr. Ella Foster",
     degree: "MBBS, MD (Neurology)",
     hospital: "United Hospital",
@@ -159,6 +179,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=51",
   },
   {
+    id: 20,
     name: "Dr. Henry Brooks",
     degree: "MBBS, DDV (Dermatology)",
     hospital: "Popular Diagnostic Centre",
@@ -167,6 +188,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=53",
   },
   {
+    id: 21,
     name: "Dr. Lily Ward",
     degree: "MBBS, MS (Ortho Surgery)",
     hospital: "Square Hospital",
@@ -175,6 +197,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=54",
   },
   {
+    id: 22,
     name: "Dr. Carter James",
     degree: "MBBS, FCPS (Medicine)",
     hospital: "Ibn Sina Medical",
@@ -183,6 +206,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=55",
   },
   {
+    id: 23,
     name: "Dr. Zoe Richardson",
     degree: "MBBS, MD (Pediatrics)",
     hospital: "Evercare Hospital",
@@ -191,6 +215,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=57",
   },
   {
+    id: 24,
     name: "Dr. Nathan Cooper",
     degree: "MBBS, FCPS (GYNAE)",
     hospital: "Labaid Hospital",
@@ -199,6 +224,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=58",
   },
   {
+    id: 25,
     name: "Dr. Aria Phillips",
     degree: "MBBS, MS (ENT)",
     hospital: "Medinova Hospital",
@@ -207,6 +233,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=59",
   },
   {
+    id: 26,
     name: "Dr. Logan Hayes",
     degree: "MBBS, FCPS (Cardiology)",
     hospital: "GreenLife Hospital",
@@ -215,6 +242,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=60",
   },
   {
+    id: 27,
     name: "Dr. Sofia Price",
     degree: "MBBS, MD (Neurology)",
     hospital: "United Hospital",
@@ -223,6 +251,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=61",
   },
   {
+    id: 28,
     name: "Dr. Ryan Bell",
     degree: "MBBS, DDV (Dermatology)",
     hospital: "Popular Diagnostic Centre",
@@ -231,6 +260,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=62",
   },
   {
+    id: 29,
     name: "Dr. Mila Howard",
     degree: "MBBS, MS (Ortho Surgery)",
     hospital: "Square Hospital",
@@ -239,6 +269,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=63",
   },
   {
+    id: 30,
     name: "Dr. Owen Barnes",
     degree: "MBBS, FCPS (Medicine)",
     hospital: "Ibn Sina Medical",
@@ -247,6 +278,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=64",
   },
   {
+    id: 31,
     name: "Dr. Layla Simmons",
     degree: "MBBS, MD (Pediatrics)",
     hospital: "Evercare Hospital",
@@ -255,6 +287,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=65",
   },
   {
+    id: 32,
     name: "Dr. Elijah Ward",
     degree: "MBBS, FCPS (GYNAE)",
     hospital: "Labaid Hospital",
@@ -263,6 +296,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=66",
   },
   {
+    id: 33,
     name: "Dr. Nora Griffin",
     degree: "MBBS, MS (ENT)",
     hospital: "Medinova Hospital",
@@ -271,6 +305,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=67",
   },
   {
+    id: 34,
     name: "Dr. Jason Kim",
     degree: "MBBS, FCPS (Cardiology)",
     hospital: "GreenLife Hospital",
@@ -279,6 +314,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=68",
   },
   {
+    id: 35,
     name: "Dr. Natalie Ross",
     degree: "MBBS, MD (Neurology)",
     hospital: "United Hospital",
@@ -287,6 +323,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=69",
   },
   {
+    id: 36,
     name: "Dr. Dylan Stone",
     degree: "MBBS, DDV (Dermatology)",
     hospital: "Popular Diagnostic Centre",
@@ -295,6 +332,7 @@ const doctors = [
     image: "https://i.pravatar.cc/300?img=70",
   },
 ];
+
 
 const AllDoctors = () => {
   const [search, setSearch] = useState("");
@@ -509,16 +547,18 @@ const AllDoctors = () => {
                     </span>
                   </div>
 
-                  <button
-                    className="
-                      mt-4 w-full py-2 
-                      bg-teal-600 text-white rounded-lg
-                      font-semibold hover:bg-teal-700 shadow
-                      transition-all text-sm
-                    "
-                  >
-                    View Profile
-                  </button>
+                  <Link to={`/doctor/${indexOfFirst + idx}`}>
+                    <button
+                      className="
+                        mt-4 w-full py-2 
+                        bg-teal-600 text-white rounded-lg
+                        font-semibold hover:bg-teal-700 shadow
+                        transition-all text-sm
+                      "
+                    >
+                      View Profile
+                    </button>
+                  </Link>
                 </div>
               ))}
             </div>
