@@ -4,6 +4,7 @@ import ContactUs from "./pages/Contact/ContactUs";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import AllDoctors from "./pages/AllDoctors/AllDoctors";
 import DoctorDetails from "./pages/DoctorDetails/DoctorDetails";
+import UserDashboard from "./pages/User/UserDashboard";
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
       <Route path="/contact" element={<ContactUs></ContactUs>} />
       <Route path="/find-doctor" element={<AllDoctors></AllDoctors>} />
       <Route path="/doctor/:id" element={<DoctorDetails></DoctorDetails>} />
+      <Route path="/dashboard" element={<UserDashboard></UserDashboard>} />
       <Route path="*" element={<ErrorPage></ErrorPage>} />
     </Routes>
   );
