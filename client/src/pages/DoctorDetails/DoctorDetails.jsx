@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaStar, FaHospital, FaUser, FaArrowLeft } from "react-icons/fa";
 import doctors from "../../data/doctors";
+import Swal from "sweetalert2";
 
 const DoctorDetails = () => {
   const { id } = useParams();
@@ -30,18 +31,30 @@ const DoctorDetails = () => {
   };
 
   const handleConfirm = () => {
-    if (selectedSlot === null) return setError("Please select a time slot.");
-    if (!patientName.trim()) return setError("Patient name is required.");
-    if (!patientNumber.trim()) return setError("Contact number is required.");
+      if (selectedSlot === null) return setError("Please select a time slot.");
+      if (!patientName.trim()) return setError("Patient name is required.");
+      if (!patientNumber.trim()) return setError("Contact number is required.");
 
-    setError("");
+      setError("");
 
-    alert(
-      `Appointment Confirmed!\n\nDoctor: ${doctor.name}\nPatient: ${patientName}\nContact: ${patientNumber}\nTime: ${doctor.timeSlots[selectedSlot].day} (${doctor.timeSlots[selectedSlot].time})`
-    );
+      Swal.fire({
+        icon: "success",
+        title: "Appointment Confirmed!",
+        html: `
+          <div style="text-align:left; line-height:1.6">
+            <p><b>Doctor:</b> ${doctor.name}</p>
+            <p><b>Patient:</b> ${patientName}</p>
+            <p><b>Contact:</b> ${patientNumber}</p>
+            <p><b>Time:</b> ${doctor.timeSlots[selectedSlot].day} — ${doctor.timeSlots[selectedSlot].time}</p>
+          </div>
+        `,
+        confirmButtonColor: "#0d9488",
+        confirmButtonText: "OK"
+      });
 
-    setShowModal(false);
-  };
+      setShowModal(false);
+    };
+
 
   return (
     <>
