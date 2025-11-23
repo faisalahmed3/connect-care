@@ -547,7 +547,7 @@ const AllDoctors = () => {
                     </span>
                   </div>
 
-                  <Link to={`/doctor/${indexOfFirst + idx}`}>
+                  <Link to={`/doctor/${doc.id}`}>
                     <button
                       className="
                         mt-4 w-full py-2 

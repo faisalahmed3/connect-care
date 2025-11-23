@@ -1,86 +1,137 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { FaStar, FaHospital, FaUserMd, FaArrowLeft } from "react-icons/fa";
-import doctors from "../../data/doctors"; 
+import { FaStar, FaHospital, FaUser, FaArrowLeft } from "react-icons/fa";
+import doctors from "../../data/doctors";
 
 const DoctorDetails = () => {
   const { id } = useParams();
-  const doctor = doctors[id];
+  const doctor = doctors.find((d) => d.id === Number(id));
 
   if (!doctor) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-700 text-xl">Doctor not found.</p>
+      <div className="min-h-screen flex items-center justify-center text-xl text-gray-700">
+        Doctor not found.
       </div>
     );
   }
 
   return (
     <section className="py-24 bg-gradient-to-b from-[#E4FFFA] to-white min-h-screen relative">
-
       {/* Background shapes */}
-      <div className="absolute -top-10 left-10 w-44 h-44 bg-teal-300/20 rounded-full blur-2xl"></div>
-      <div className="absolute bottom-0 right-10 w-52 h-52 bg-teal-300/20 rounded-full blur-3xl"></div>
+      <div className="absolute -top-10 left-10 w-44 h-44 bg-teal-300/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-10 w-52 h-52 bg-teal-300/20 rounded-full blur-[120px]"></div>
 
-      <div className="max-w-5xl mx-auto px-6 relative z-20">
-
+      <div className="max-w-6xl mx-auto px-6 relative z-20">
         {/* BACK BUTTON */}
         <Link
           to="/find-doctor"
-          className="inline-flex items-center gap-2 mb-8 text-teal-700 font-semibold hover:text-teal-600"
+          className="inline-flex items-center gap-2 mb-6 text-teal-700 font-semibold hover:text-teal-600"
         >
           <FaArrowLeft /> Back to Doctors
         </Link>
 
-        {/* CARD */}
-        <div className="bg-white/70 backdrop-blur-xl border border-teal-100 shadow-xl p-10 rounded-3xl flex flex-col md:flex-row gap-10">
+        {/* MAIN CARD */}
+        <div className="bg-white/70 backdrop-blur-xl border border-teal-100 shadow-xl rounded-3xl p-8 md:p-12">
+          {/* TOP SECTION (Photo + Basic info) */}
+          <div className="flex flex-col md:flex-row gap-10">
+            {/* Photo */}
+            <div className="flex-shrink-0 mx-auto md:mx-0">
+              <img
+                src={doctor.image}
+                alt={doctor.name}
+                className="w-48 h-48 md:w-56 md:h-56 rounded-2xl object-cover shadow-xl border-4 border-white"
+              />
+              <h2 className="text-xl font-bold text-gray-800 mt-4 text-center md:text-left">
+                {doctor.name}
+              </h2>
+              <p className="text-teal-600 font-medium text-center md:text-left">
+                {doctor.specialty}
+              </p>
+            </div>
 
-          {/* IMAGE */}
-          <div className="flex-shrink-0 mx-auto">
-            <img
-              src={doctor.image}
-              alt={doctor.name}
-              className="w-52 h-52 rounded-full object-cover shadow-xl border-4 border-white"
-            />
+            {/* Biography + Specialization */}
+            <div className="flex-1">
+              {/* Biography */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  Biography
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {doctor.biography}
+                </p>
+              </div>
+
+              {/* Specialization */}
+              <div className="mt-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  Specialization
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {doctor.specialization}
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* DETAILS */}
-          <div className="flex-1">
-            <h1 className="text-3xl font-extrabold text-gray-800">{doctor.name}</h1>
+          {/* Patient Reviews */}
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              Patient Reviews & Ratings
+            </h3>
 
-            <p className="text-lg text-teal-600 font-semibold mt-2">
-              {doctor.specialty}
-            </p>
+            <div className="space-y-4">
+              {doctor.reviews.map((rev, index) => (
+                <div
+                  key={index}
+                  className="bg-white/70 backdrop-blur-xl border border-teal-100 rounded-xl p-4 shadow-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaUser className="text-gray-500 text-xl" />
+                    <p className="font-semibold text-gray-700">{rev.user}</p>
+                  </div>
 
-            <p className="text-gray-700 text-sm mt-1">{doctor.degree}</p>
+                  <div className="flex items-center gap-1 text-yellow-500 mt-2">
+                    {Array.from({ length: Math.round(rev.rating) }).map(
+                      (_, i) => (
+                        <FaStar key={i} />
+                      )
+                    )}
+                    <span className="text-gray-600 ml-2">{rev.rating}/5</span>
+                  </div>
 
-            <div className="flex items-center gap-2 mt-4 text-yellow-500 text-lg">
-              <FaStar />
-              <span className="text-gray-800 font-medium">{doctor.rating}</span>
+                  <p className="text-gray-700 mt-2">{rev.comment}</p>
+                </div>
+              ))}
             </div>
+          </div>
 
-            <div className="flex items-center gap-3 mt-6 text-gray-700">
-              <FaHospital className="text-teal-600" />
-              <span className="text-md font-medium">{doctor.hospital}</span>
+          {/* Available Time Slots */}
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              Available Time Slots
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {doctor.timeSlots.map((slot, index) => (
+                <div
+                  key={index}
+                  className="bg-white/70 backdrop-blur-xl border border-teal-100 p-4 rounded-xl shadow-md"
+                >
+                  <p className="font-semibold text-teal-700">{slot.day}</p>
+                  <p className="text-gray-700 text-sm">{slot.time}</p>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* DESCRIPTION */}
-            <p className="mt-6 text-gray-600 leading-relaxed">
-              Dr. {doctor.name} is a highly experienced {doctor.specialty.toLowerCase()} with
-              over 10+ years of experience. They have contributed significantly to medical 
-              research and patient care, ensuring top-quality treatment and compassionate service.
-            </p>
-
-            {/* APPOINTMENT BUTTON */}
-            <button
-              className="
-                mt-7 px-8 py-3 
-                bg-teal-600 text-white rounded-xl 
-                shadow-lg hover:bg-teal-700 
-                transition font-semibold
-              "
-            >
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-10">
+            <button className="w-full sm:w-auto px-8 py-3 bg-teal-600 text-white rounded-xl shadow-lg hover:bg-teal-700 transition font-semibold">
               Book Appointment
+            </button>
+
+            <button className="w-full sm:w-auto px-8 py-3 bg-white border border-teal-400 text-teal-700 rounded-xl shadow hover:bg-teal-50 transition font-semibold">
+              Consult for Guidelines
             </button>
           </div>
         </div>
