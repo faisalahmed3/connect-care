@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
+  const { loginUser, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!form.email || !form.password) {
       Swal.fire({
         icon: "warning",
@@ -22,30 +26,45 @@ const Login = () => {
       return;
     }
 
-    if (form.email === "john@example.com" && form.password === "123456") {
+    try {
+      await loginUser(form.email, form.password);
+
       Swal.fire({
         icon: "success",
         title: "Login Successful",
         text: "Welcome back!",
         confirmButtonColor: "#0d9488",
       });
-    } else {
+
+      navigate("/dashboard");
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Login Failed",
-        text: "Invalid email or password.",
+        text: error.message,
         confirmButtonColor: "#ef4444",
       });
     }
   };
 
-  const handleGoogleLogin = () => {
-    Swal.fire({
-      icon: "info",
-      title: "Google Login",
-      text: "Google login feature coming soon!",
-      confirmButtonColor: "#0d9488",
-    });
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+
+      Swal.fire({
+        icon: "success",
+        title: "Login with Google Successful",
+        confirmButtonColor: "#0d9488",
+      });
+
+      navigate("/dashboard");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Google Login Failed",
+        text: error.message,
+      });
+    }
   };
 
   return (

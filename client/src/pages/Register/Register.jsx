@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   FaUser,
   FaEnvelope,
@@ -8,10 +8,14 @@ import {
   FaEyeSlash,
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthContext";
 
 const Register = () => {
+  const { registerUser, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -23,52 +27,74 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const { name, email, phone, password, confirmPassword } = form;
 
     if (!name || !email || !phone || !password || !confirmPassword) {
-      Swal.fire({
+      return Swal.fire({
         icon: "warning",
         title: "Missing Information",
         text: "All fields are required.",
         confirmButtonColor: "#0d9488",
       });
-      return;
     }
 
     if (password !== confirmPassword) {
-      Swal.fire({
+      return Swal.fire({
         icon: "error",
         title: "Password Mismatch",
-        text: "Password and Confirm Password must match.",
-        confirmButtonColor: "#ef4444",
+        text: "Passwords do not match.",
       });
-      return;
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Registration Successful!",
-      text: "Welcome to our platform.",
-      confirmButtonColor: "#0d9488",
-    });
+    try {
+      await registerUser(email, password);
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "Your account has been created.",
+        confirmButtonColor: "#0d9488",
+      });
+
+      navigate("/login");
+
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message,
+      });
+    }
   };
 
-  const handleGoogleRegister = () => {
-    Swal.fire({
-      icon: "info",
-      title: "Google Register",
-      text: "Google registration is coming soon!",
-      confirmButtonColor: "#0d9488",
-    });
+  const handleGoogleRegister = async () => {
+    try {
+      await googleLogin();
+
+      Swal.fire({
+        icon: "success",
+        title: "Registered with Google!",
+        confirmButtonColor: "#0d9488",
+      });
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Google Registration Failed",
+        text: error.message,
+      });
+    }
   };
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-[#E4FFFA] to-white flex items-center justify-center px-4 sm:px-6 md:px-10 relative overflow-hidden">
 
       {/* Background shapes */}
-      <div className="absolute top-10 left-10 w-40 sm:w-56 md:w-64 h-40 sm:h-56 md:h-64 bg-teal-300/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 right-10 w-48 sm:w-64 md:w-72 h-48 sm:h-64 md:h-72 bg-teal-300/20 rounded-full blur-[120px]"></div>
+      <div className="absolute top-10 left-10 w-40 sm:w-56 md:w-64 bg-teal-300/20 rounded-full blur-3xl h-40 sm:h-56 md:h-64"></div>
+      <div className="absolute bottom-10 right-10 w-48 sm:w-64 md:w-72 bg-teal-300/20 rounded-full blur-[120px] h-48 sm:h-64 md:h-72"></div>
 
       {/* Register Box */}
       <div className="w-full max-w-md bg-white/60 backdrop-blur-xl shadow-xl rounded-3xl p-8 sm:p-10 relative z-20 border border-teal-100">
@@ -80,7 +106,7 @@ const Register = () => {
           Create a new account
         </p>
 
-        {/* Full Name */}
+        {/* FULL NAME */}
         <div className="mt-8">
           <label className="text-gray-700 font-medium text-sm sm:text-base">
             Full Name
@@ -193,7 +219,7 @@ const Register = () => {
           Register
         </button>
 
-        {/* Google Register */}
+        {/* GOOGLE REGISTER */}
         <button
           onClick={handleGoogleRegister}
           className="mt-4 w-full py-3 bg-white border border-teal-300 text-gray-700 rounded-xl shadow hover:bg-teal-50 transition flex items-center justify-center gap-3 text-sm sm:text-base"
@@ -212,6 +238,7 @@ const Register = () => {
           </Link>
         </p>
       </div>
+
     </section>
   );
 };

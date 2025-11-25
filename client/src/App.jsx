@@ -12,13 +12,13 @@ import UserDashboard from "./pages/User/UserDashboard";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 
+import PrivateRoute from "./routes/PrivateRoute";
+
 const App = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  // Routes where Navbar & Footer should NOT appear
   const noLayoutRoutes = ["/login", "/register"];
-
-  const hideLayout = noLayoutRoutes.includes(location.pathname);
+  const hideLayout = noLayoutRoutes.includes(pathname);
 
   return (
     <>
@@ -28,10 +28,30 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/find-doctor" element={<AllDoctors />} />
-        <Route path="/doctor/:id" element={<DoctorDetails />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
+
+        {/* PROTECTED ROUTES */}
+        <Route
+          path="/doctor/:id"
+          element={
+            <PrivateRoute>
+              <DoctorDetails />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <UserDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
         <Route path="*" element={<ErrorPage />} />
       </Routes>
 
