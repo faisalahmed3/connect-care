@@ -104,6 +104,22 @@ async function run() {
     });
 
 
+    // GET TOP 5 DOCTORS (sort by rating desc)
+    app.get("/doctors", async (req, res) => {
+    try {
+        const result = await doctorsCollection
+        .find()
+        .sort({ rating: -1 })
+        .limit(5)
+        .toArray();
+
+        res.send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Failed to fetch top doctors", error: err });
+    }
+    });
+
+
     // Root route
     app.get("/", (req, res) => {
       res.send("ConnectCare API running...");
