@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { FaStar, FaHospital, FaUser, FaArrowLeft } from "react-icons/fa";
-import doctors from "../../data/doctors";
+import { FaStar, FaUser, FaArrowLeft } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const DoctorDetails = () => {
   const { id } = useParams();
-  const doctor = doctors.find((d) => d.id === Number(id));
 
+  const [doctor, setDoctor] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Modal states
   const [showModal, setShowModal] = useState(false);
   const [remainingSlots, setRemainingSlots] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [patientName, setPatientName] = useState("");
   const [patientNumber, setPatientNumber] = useState("");
   const [error, setError] = useState("");
+
+  // -------------------------
+  // FETCH DOCTOR FROM BACKEND
+  // -------------------------
+  useEffect(() => {
+    fetch(`http://localhost:3000/doctors/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setDoctor(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-lg text-teal-700">
+        Loading doctor details...
+      </div>
+    );
+  }
 
   if (!doctor) {
     return (
@@ -23,61 +46,70 @@ const DoctorDetails = () => {
     );
   }
 
-  // When Book Appointment is clicked
+  // -------------------------
+  // OPEN APPOINTMENT MODAL
+  // -------------------------
   const handleOpenModal = () => {
-    const slots = Math.floor(Math.random() * 10) + 1; // OK because inside event handler
+    const slots = Math.floor(Math.random() * 10) + 1;
     setRemainingSlots(slots);
     setShowModal(true);
   };
 
+  // -------------------------
+  // CONFIRM APPOINTMENT
+  // -------------------------
   const handleConfirm = () => {
-      if (selectedSlot === null) return setError("Please select a time slot.");
-      if (!patientName.trim()) return setError("Patient name is required.");
-      if (!patientNumber.trim()) return setError("Contact number is required.");
+    if (selectedSlot === null)
+      return setError("Please select a time slot.");
 
-      setError("");
+    if (!patientName.trim())
+      return setError("Patient name is required.");
 
-      Swal.fire({
-        icon: "success",
-        title: "Appointment Confirmed!",
-        html: `
-          <div style="text-align:left; line-height:1.6">
-            <p><b>Doctor:</b> ${doctor.name}</p>
-            <p><b>Patient:</b> ${patientName}</p>
-            <p><b>Contact:</b> ${patientNumber}</p>
-            <p><b>Time:</b> ${doctor.timeSlots[selectedSlot].day} — ${doctor.timeSlots[selectedSlot].time}</p>
-          </div>
-        `,
-        confirmButtonColor: "#0d9488",
-        confirmButtonText: "OK"
-      });
+    if (!patientNumber.trim())
+      return setError("Contact number is required.");
 
-      setShowModal(false);
-    };
+    setError("");
 
+    Swal.fire({
+      icon: "success",
+      title: "Appointment Confirmed!",
+      html: `
+        <div style="text-align:left; line-height:1.6">
+          <p><b>Doctor:</b> ${doctor.name}</p>
+          <p><b>Patient:</b> ${patientName}</p>
+          <p><b>Contact:</b> ${patientNumber}</p>
+          <p><b>Time:</b> ${doctor.timeSlots[selectedSlot].day} — ${doctor.timeSlots[selectedSlot].time}</p>
+        </div>
+      `,
+      confirmButtonColor: "#0d9488",
+    });
+
+    setShowModal(false);
+  };
 
   return (
     <>
       {/* MAIN PAGE */}
       <section className="py-24 bg-gradient-to-b from-[#E4FFFA] to-white min-h-screen relative">
-        {/* BG shapes */}
+        {/* Background shapes */}
         <div className="absolute -top-10 left-10 w-44 h-44 bg-teal-300/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-10 w-52 h-52 bg-teal-300/20 rounded-full blur-[120px]"></div>
 
         <div className="max-w-6xl mx-auto px-6 relative z-20">
-          {/* Back */}
+
+          {/* BACK BUTTON */}
           <Link
             to="/find-doctor"
-            className="inline-flex items-center gap-2 mb-6 text-teal-700 font-semibold hover:text-teal-600"
+            className="inline-flex items-center gap-2 mb-8 text-teal-700 font-semibold hover:text-teal-600"
           >
             <FaArrowLeft /> Back to Doctors
           </Link>
 
           {/* MAIN CARD */}
           <div className="bg-white/70 backdrop-blur-xl border border-teal-100 shadow-xl rounded-3xl p-8 md:p-12">
-            
+
             <div className="flex flex-col md:flex-row gap-10">
-              
+
               {/* PHOTO + NAME */}
               <div className="flex-shrink-0 mx-auto md:mx-0">
                 <img
@@ -93,9 +125,8 @@ const DoctorDetails = () => {
                 </p>
               </div>
 
-              {/* BIO + SPECIALIZATION */}
+              {/* BIO */}
               <div className="flex-1">
-                
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold text-gray-800 mb-2">
                     Biography
@@ -122,32 +153,32 @@ const DoctorDetails = () => {
                 Patient Reviews & Ratings
               </h3>
 
-              <div className="space-y-4">
-                {doctor.reviews.map((rev, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/70 backdrop-blur-xl border border-teal-100 rounded-xl p-4 shadow-md"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FaUser className="text-gray-500 text-xl" />
-                      <p className="font-semibold text-gray-700">
-                        {rev.user}
-                      </p>
-                    </div>
+              {doctor.reviews?.length > 0 ? (
+                <div className="space-y-4">
+                  {doctor.reviews.map((rev, i) => (
+                    <div
+                      key={i}
+                      className="bg-white/70 backdrop-blur-xl border border-teal-100 rounded-xl p-4 shadow-md"
+                    >
+                      <div className="flex items-center gap-3">
+                        <FaUser className="text-gray-500 text-xl" />
+                        <p className="font-semibold text-gray-700">{rev.user}</p>
+                      </div>
 
-                    <div className="flex items-center gap-1 text-yellow-500 mt-2">
-                      {Array.from({ length: Math.round(rev.rating) }).map(
-                        (_, i) => <FaStar key={i} />
-                      )}
-                      <span className="text-gray-600 ml-2">
-                        {rev.rating}/5
-                      </span>
-                    </div>
+                      <div className="flex items-center gap-1 text-yellow-500 mt-2">
+                        {Array.from({ length: Math.round(rev.rating) }).map((_, j) => (
+                          <FaStar key={j} />
+                        ))}
+                        <span className="text-gray-600 ml-2">{rev.rating}/5</span>
+                      </div>
 
-                    <p className="text-gray-700 mt-2">{rev.comment}</p>
-                  </div>
-                ))}
-              </div>
+                      <p className="text-gray-700 mt-2">{rev.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">No reviews available.</p>
+              )}
             </div>
 
             {/* TIME SLOTS */}
@@ -157,9 +188,9 @@ const DoctorDetails = () => {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {doctor.timeSlots.map((slot, index) => (
+                {doctor.timeSlots?.map((slot, i) => (
                   <div
-                    key={index}
+                    key={i}
                     className="bg-white/70 backdrop-blur-xl border border-teal-100 p-4 rounded-xl shadow-md"
                   >
                     <p className="font-semibold text-teal-700">{slot.day}</p>
@@ -182,6 +213,7 @@ const DoctorDetails = () => {
                 Consult for Guidelines
               </button>
             </div>
+
           </div>
         </div>
       </section>
@@ -206,22 +238,23 @@ const DoctorDetails = () => {
               Select an available time slot for <b>{doctor.name}</b>.
             </p>
 
-            {/* SLOT SELECTION */}
+            {/* SLOT SELECT */}
             <div className="space-y-3">
-              {doctor.timeSlots.map((slot, index) => (
+              {doctor.timeSlots.map((slot, i) => (
                 <label
-                  key={index}
-                  className={`block border rounded-xl p-4 cursor-pointer transition 
-                    ${selectedSlot === index
+                  key={i}
+                  className={`block border rounded-xl p-4 cursor-pointer transition ${
+                    selectedSlot === i
                       ? "border-teal-500 bg-teal-50"
-                      : "border-teal-200 bg-white"}`}
+                      : "border-teal-200 bg-white"
+                  }`}
                 >
                   <input
                     type="radio"
                     name="slot"
                     className="mr-3"
-                    checked={selectedSlot === index}
-                    onChange={() => setSelectedSlot(index)}
+                    checked={selectedSlot === i}
+                    onChange={() => setSelectedSlot(i)}
                   />
                   <span className="font-semibold text-teal-700">{slot.day}</span>{" "}
                   — <span className="text-gray-700 text-sm">{slot.time}</span>
@@ -229,13 +262,13 @@ const DoctorDetails = () => {
               ))}
             </div>
 
-            {/* REMAINING SLOTS */}
+            {/* REMAINING */}
             <p className="mt-5 text-gray-800 font-semibold">
               Remaining patient slots:{" "}
               <span className="text-teal-600">{remainingSlots}</span>
             </p>
 
-            {/* NAME */}
+            {/* PATIENT NAME */}
             <div className="mt-6">
               <label className="block text-gray-700 font-semibold mb-1">
                 Patient Name
@@ -249,7 +282,7 @@ const DoctorDetails = () => {
               />
             </div>
 
-            {/* CONTACT */}
+            {/* CONTACT NUMBER */}
             <div className="mt-4">
               <label className="block text-gray-700 font-semibold mb-1">
                 Contact Number
@@ -263,19 +296,18 @@ const DoctorDetails = () => {
               />
             </div>
 
-            {/* ERROR */}
+            {/* ERROR MESSAGE */}
             {error && (
               <p className="mt-3 text-red-600 font-semibold">{error}</p>
             )}
 
-            {/* CONFIRM */}
+            {/* CONFIRM BTN */}
             <button
               className="w-full mt-6 py-3 bg-teal-600 text-white font-semibold rounded-xl shadow-lg hover:bg-teal-700 transition"
               onClick={handleConfirm}
             >
               Confirm Appointment
             </button>
-
           </div>
         </div>
       )}

@@ -28,17 +28,13 @@ async function run() {
     const db = client.db("ConnectCare");
     const doctorsCollection = db.collection("doctors");
 
-    // -----------------------------
     // GET ALL DOCTORS
-    // -----------------------------
     app.get("/doctors", async (req, res) => {
       const result = await doctorsCollection.find().toArray();
       res.send(result);
     });
 
-    // -----------------------------
     // GET SINGLE DOCTOR BY ID
-    // -----------------------------
     app.get("/doctors/:id", async (req, res) => {
       const id = req.params.id;
 
