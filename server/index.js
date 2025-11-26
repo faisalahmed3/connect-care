@@ -58,7 +58,7 @@ async function run() {
     try {
         const appointment = req.body;
 
-        if (!appointment.userId || !appointment.doctorId) {
+        if (!appointment.userEmail || !appointment.doctorId) {
         return res.status(400).send({ message: "Missing required fields" });
         }
 
@@ -67,6 +67,39 @@ async function run() {
     } catch (err) {
         console.log(err);
         res.status(500).send({ message: "Server error", error: err });
+    }
+    });
+
+    // GET APPOINTMENTS FOR A USER
+    app.get("/appointments/user/:email", async (req, res) => {
+    try {
+        const email = req.params.email;
+        const result = await appointmentsCollection
+        .find({ userEmail: email })
+        .toArray();
+
+        res.send(result);
+    } catch (err) {
+        res.status(500).send({ message: "Server error", error: err });
+    }
+    });
+
+    // DELETE APPOINTMENT
+    app.delete("/appointments/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const result = await appointmentsCollection.deleteOne({
+        _id: new ObjectId(id),
+        });
+
+        if (result.deletedCount === 0) {
+        return res.status(404).send({ message: "Appointment not found" });
+        }
+
+        res.send({ success: true });
+    } catch (err) {
+        res.status(500).send({ message: "Delete failed", error: err });
     }
     });
 

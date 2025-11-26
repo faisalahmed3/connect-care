@@ -78,7 +78,7 @@ const DoctorDetails = () => {
     const slot = doctor.timeSlots[selectedSlot];
 
     const appointmentData = {
-      userId: user.uid || user.email,
+      userEmail: user.email,
       doctorId: doctor.id,
       doctorName: doctor.name,
       slotDay: slot.day,
