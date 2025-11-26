@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaStar, FaUser, FaArrowLeft } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthContext"; // your firebase auth context
 
 const DoctorDetails = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Modal states
+  // Modal States
   const [showModal, setShowModal] = useState(false);
   const [remainingSlots, setRemainingSlots] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -17,9 +19,8 @@ const DoctorDetails = () => {
   const [patientNumber, setPatientNumber] = useState("");
   const [error, setError] = useState("");
 
-  // -------------------------
+
   // FETCH DOCTOR FROM BACKEND
-  // -------------------------
   useEffect(() => {
     fetch(`http://localhost:3000/doctors/${id}`)
       .then((res) => res.json())
@@ -46,19 +47,23 @@ const DoctorDetails = () => {
     );
   }
 
-  // -------------------------
-  // OPEN APPOINTMENT MODAL
-  // -------------------------
+  // OPEN MODAL
   const handleOpenModal = () => {
     const slots = Math.floor(Math.random() * 10) + 1;
     setRemainingSlots(slots);
     setShowModal(true);
   };
 
-  // -------------------------
   // CONFIRM APPOINTMENT
-  // -------------------------
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    if (!user) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Please login first!",
+        confirmButtonColor: "#0d9488",
+      });
+    }
+
     if (selectedSlot === null)
       return setError("Please select a time slot.");
 
@@ -70,34 +75,64 @@ const DoctorDetails = () => {
 
     setError("");
 
-    Swal.fire({
-      icon: "success",
-      title: "Appointment Confirmed!",
-      html: `
-        <div style="text-align:left; line-height:1.6">
-          <p><b>Doctor:</b> ${doctor.name}</p>
-          <p><b>Patient:</b> ${patientName}</p>
-          <p><b>Contact:</b> ${patientNumber}</p>
-          <p><b>Time:</b> ${doctor.timeSlots[selectedSlot].day} — ${doctor.timeSlots[selectedSlot].time}</p>
-        </div>
-      `,
-      confirmButtonColor: "#0d9488",
-    });
+    const slot = doctor.timeSlots[selectedSlot];
 
-    setShowModal(false);
+    const appointmentData = {
+      userId: user.uid || user.email,
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      slotDay: slot.day,
+      slotTime: slot.time,
+      patientName,
+      contact: patientNumber,
+      createdAt: new Date(),
+    };
+
+    try {
+      await fetch("http://localhost:3000/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(appointmentData),
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Appointment Confirmed!",
+        html: `
+          <div style="text-align:left; line-height:1.6">
+            <p><b>Doctor:</b> ${doctor.name}</p>
+            <p><b>Patient:</b> ${patientName}</p>
+            <p><b>Contact:</b> ${patientNumber}</p>
+            <p><b>Time:</b> ${slot.day} — ${slot.time}</p>
+          </div>
+        `,
+        confirmButtonColor: "#0d9488",
+      });
+
+      setShowModal(false);
+      setSelectedSlot(null);
+      setPatientName("");
+      setPatientNumber("");
+    } catch (err) {
+      console.error("Appointment save failed:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Failed!",
+        text: "Could not save appointment. Try again later.",
+      });
+    }
   };
 
   return (
     <>
       {/* MAIN PAGE */}
       <section className="py-24 bg-gradient-to-b from-[#E4FFFA] to-white min-h-screen relative">
-        {/* Background shapes */}
         <div className="absolute -top-10 left-10 w-44 h-44 bg-teal-300/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-10 w-52 h-52 bg-teal-300/20 rounded-full blur-[120px]"></div>
 
         <div className="max-w-6xl mx-auto px-6 relative z-20">
 
-          {/* BACK BUTTON */}
+          {/* BACK */}
           <Link
             to="/find-doctor"
             className="inline-flex items-center gap-2 mb-8 text-teal-700 font-semibold hover:text-teal-600"
@@ -110,7 +145,7 @@ const DoctorDetails = () => {
 
             <div className="flex flex-col md:flex-row gap-10">
 
-              {/* PHOTO + NAME */}
+              {/* IMAGE + NAME */}
               <div className="flex-shrink-0 mx-auto md:mx-0">
                 <img
                   src={doctor.image}
@@ -127,8 +162,8 @@ const DoctorDetails = () => {
 
               {/* BIO */}
               <div className="flex-1">
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3">
                     Biography
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -137,7 +172,7 @@ const DoctorDetails = () => {
                 </div>
 
                 <div className="mt-6">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3">
                     Specialization
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -150,14 +185,14 @@ const DoctorDetails = () => {
             {/* REVIEWS */}
             <div className="mt-12">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                Patient Reviews & Ratings
+                Patient Reviews
               </h3>
 
               {doctor.reviews?.length > 0 ? (
                 <div className="space-y-4">
-                  {doctor.reviews.map((rev, i) => (
+                  {doctor.reviews.map((rev, idx) => (
                     <div
-                      key={i}
+                      key={idx}
                       className="bg-white/70 backdrop-blur-xl border border-teal-100 rounded-xl p-4 shadow-md"
                     >
                       <div className="flex items-center gap-3">
@@ -166,8 +201,8 @@ const DoctorDetails = () => {
                       </div>
 
                       <div className="flex items-center gap-1 text-yellow-500 mt-2">
-                        {Array.from({ length: Math.round(rev.rating) }).map((_, j) => (
-                          <FaStar key={j} />
+                        {Array.from({ length: Math.round(rev.rating) }).map((_, i) => (
+                          <FaStar key={i} />
                         ))}
                         <span className="text-gray-600 ml-2">{rev.rating}/5</span>
                       </div>
@@ -177,7 +212,7 @@ const DoctorDetails = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500">No reviews available.</p>
+                <p className="text-gray-500">No reviews yet.</p>
               )}
             </div>
 
@@ -223,7 +258,7 @@ const DoctorDetails = () => {
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white w-full max-w-lg p-8 rounded-2xl shadow-lg relative">
 
-            {/* CLOSE */}
+            {/* Close */}
             <button
               className="absolute top-3 right-3 text-gray-600 hover:text-black text-xl"
               onClick={() => setShowModal(false)}
@@ -234,11 +269,12 @@ const DoctorDetails = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
               Book Appointment
             </h2>
+
             <p className="text-gray-600 mb-6">
               Select an available time slot for <b>{doctor.name}</b>.
             </p>
 
-            {/* SLOT SELECT */}
+            {/* Slot Selection */}
             <div className="space-y-3">
               {doctor.timeSlots.map((slot, i) => (
                 <label
@@ -262,13 +298,13 @@ const DoctorDetails = () => {
               ))}
             </div>
 
-            {/* REMAINING */}
+            {/* Remaining slots */}
             <p className="mt-5 text-gray-800 font-semibold">
               Remaining patient slots:{" "}
               <span className="text-teal-600">{remainingSlots}</span>
             </p>
 
-            {/* PATIENT NAME */}
+            {/* Patient Name */}
             <div className="mt-6">
               <label className="block text-gray-700 font-semibold mb-1">
                 Patient Name
@@ -277,12 +313,12 @@ const DoctorDetails = () => {
                 type="text"
                 value={patientName}
                 onChange={(e) => setPatientName(e.target.value)}
-                className="w-full border border-teal-200 p-3 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none"
+                className="w-full border border-teal-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-teal-400"
                 placeholder="Enter patient name"
               />
             </div>
 
-            {/* CONTACT NUMBER */}
+            {/* Contact Number */}
             <div className="mt-4">
               <label className="block text-gray-700 font-semibold mb-1">
                 Contact Number
@@ -291,17 +327,16 @@ const DoctorDetails = () => {
                 type="text"
                 value={patientNumber}
                 onChange={(e) => setPatientNumber(e.target.value)}
-                className="w-full border border-teal-200 p-3 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none"
+                className="w-full border border-teal-200 p-3 rounded-xl outline-none focus:ring-2 focus:ring-teal-400"
                 placeholder="e.g. 017XXXXXXXX"
               />
             </div>
 
-            {/* ERROR MESSAGE */}
             {error && (
               <p className="mt-3 text-red-600 font-semibold">{error}</p>
             )}
 
-            {/* CONFIRM BTN */}
+            {/* Confirm Btn */}
             <button
               className="w-full mt-6 py-3 bg-teal-600 text-white font-semibold rounded-xl shadow-lg hover:bg-teal-700 transition"
               onClick={handleConfirm}

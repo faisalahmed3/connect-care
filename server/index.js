@@ -49,6 +49,28 @@ async function run() {
       }
     });
 
+
+    // CREATE APPOINTMENT
+    const appointmentsCollection = db.collection("appointments");
+
+    // CREATE APPOINTMENT
+    app.post("/appointments", async (req, res) => {
+    try {
+        const appointment = req.body;
+
+        if (!appointment.userId || !appointment.doctorId) {
+        return res.status(400).send({ message: "Missing required fields" });
+        }
+
+        const result = await appointmentsCollection.insertOne(appointment);
+        res.send({ success: true, insertedId: result.insertedId });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ message: "Server error", error: err });
+    }
+    });
+
+
     // Root route
     app.get("/", (req, res) => {
       res.send("ConnectCare API running...");
