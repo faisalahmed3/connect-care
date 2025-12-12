@@ -8,22 +8,22 @@ const departments = [
   {
     icon: <FaHeartbeat size={42} className="text-white" />,
     title: "CARDIOLOGY",
-    desc: "Fact that a reader will be distracted by the readable page when looking at its layout.",
+    desc: "Specialized care for heart conditions, focusing on prevention, accurate diagnosis, and long-term management.",
   },
   {
     icon: <MdOutlineMedicalServices size={42} className="text-white" />,
     title: "DIAGNOSIS",
-    desc: "Fact that a reader will be distracted by the readable page when looking at its layout.",
+    desc: "Advanced diagnostic services to identify health issues early and support effective treatment decisions.",
   },
   {
-    icon: <GiScalpel size={42} className="text-white" />,   // FIXED HERE
+    icon: <GiScalpel size={42} className="text-white" />,
     title: "SURGERY",
-    desc: "Fact that a reader will be distracted by the readable page when looking at its layout.",
+    desc: "Safe and precise surgical procedures performed by skilled surgeons using modern medical techniques.",
   },
   {
     icon: <FaBriefcaseMedical size={42} className="text-white" />,
     title: "FIRST AID",
-    desc: "Fact that a reader will be distracted by the readable page when looking at its layout.",
+    desc: "Immediate medical assistance for injuries and emergencies to stabilize patients and prevent complications.",
   },
 ];
 
@@ -38,28 +38,32 @@ const Departments = () => {
         </h2>
 
         <p className="text-gray-600 mt-3 max-w-2xl mx-auto leading-relaxed">
-          Asperiores sunt consectetur impedit nulla molestiae delectus repellat laborum
-          dolores doloremque accusantium.
+          Comprehensive medical services delivered by experienced specialists,
+          using modern technology and patient-focused care.
         </p>
 
         {/* GRID */}
-        <div className="
-          grid gap-12 mt-16
-          grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4
-        ">
+        <div
+          className="
+            grid gap-12 mt-16
+            grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4
+          "
+        >
           {departments.map((item, index) => (
             <div
               key={index}
               className="
-                text-center px-4 py-4 transition 
+                text-center px-4 py-4 transition
                 hover:scale-[1.03] hover:shadow-md duration-300
               "
             >
               {/* ICON CIRCLE */}
-              <div className="
-                mx-auto w-24 h-24 rounded-full bg-[#2DBCA6]
-                flex items-center justify-center shadow-lg
-              ">
+              <div
+                className="
+                  mx-auto w-24 h-24 rounded-full bg-[#2DBCA6]
+                  flex items-center justify-center shadow-lg
+                "
+              >
                 {item.icon}
               </div>
 

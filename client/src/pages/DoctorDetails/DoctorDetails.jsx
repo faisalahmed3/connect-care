@@ -22,7 +22,7 @@ const DoctorDetails = () => {
 
   // FETCH DOCTOR FROM BACKEND
   useEffect(() => {
-    fetch(`http://localhost:3000/doctors/${id}`)
+    fetch(`https://server-ten-beta-18.vercel.app/doctors/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setDoctor(data);
@@ -89,7 +89,7 @@ const DoctorDetails = () => {
     };
 
     try {
-      await fetch("http://localhost:3000/appointments", {
+      await fetch("https://server-ten-beta-18.vercel.app/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(appointmentData),

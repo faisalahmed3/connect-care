@@ -35,7 +35,7 @@ const UserDashboard = () => {
   useEffect(() => {
     if (!userEmail) return;
 
-    fetch(`http://localhost:3000/appointments/user/${userEmail}`)
+    fetch(`https://server-ten-beta-18.vercel.app/appointments/user/${userEmail}`)
       .then((res) => res.json())
       .then((data) => {
         setAppointments(data);
@@ -67,7 +67,7 @@ const UserDashboard = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/appointments/${selectedAppointment._id}`,
+        `https://server-ten-beta-18.vercel.app/appointments/${selectedAppointment._id}`,
         { method: "DELETE" }
       );
 

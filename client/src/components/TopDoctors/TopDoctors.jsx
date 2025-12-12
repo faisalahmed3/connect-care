@@ -16,7 +16,7 @@ const TopDoctorsSlider = () => {
 
   // FETCH ALL DOCTORS → SORT → TOP 5
   useEffect(() => {
-    fetch("http://localhost:3000/doctors")
+    fetch("https://server-ten-beta-18.vercel.app/doctors")
       .then((res) => res.json())
       .then((data) => {
         if (!Array.isArray(data)) {

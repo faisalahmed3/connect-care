@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import doctorImg from "../../assets/Doctor-bg.png";
+import { Link } from "react-router-dom";
 
 const slides = [
   {
@@ -133,7 +134,8 @@ const HeroSection = () => {
           </p>
 
           {/* BUTTON */}
-          <button
+          <Link to="/find-doctor">
+          <button 
             className="
               px-6 sm:px-7 md:px-8 
               py-2.5 sm:py-3 
@@ -144,6 +146,7 @@ const HeroSection = () => {
           >
             Book Now
           </button>
+          </Link>
 
           {/* DOTS */}
           <div className="flex gap-2 sm:gap-3 mt-8 sm:mt-10 ml-1 sm:ml-2">
